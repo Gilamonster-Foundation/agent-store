@@ -21,4 +21,9 @@ pg = []
 anyhow.workspace = true
 blake3.workspace = true
 rusqlite.workspace = true
+serde.workspace = true
 thiserror.workspace = true
+
+[dev-dependencies]
+# Exercises StorePolicy deserialization in the real config format.
+toml.workspace = true

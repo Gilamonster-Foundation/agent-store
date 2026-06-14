@@ -72,8 +72,8 @@ comments — keep them.
   first consumer: conversation store on `WriterLog`.
 - [`modulex-mcp`](https://github.com/hartsock/modulex-mcp) — concurrent
   consumer: routine clock on `Generation`.
-- [`airship`](https://github.com/Gilamonster-Foundation/airship) — the carrier
-  that owns the managed Postgres "Meat Locker" (Phase 3).
+- An operator-owned managed Postgres "Meat Locker" — the in-cluster carrier
+  backend (Phase 3).
 
 `agent-store` is the concrete realization of the long-planned `agent-mesh-store`
 idea: shared durable causal state, backing-store-independent.

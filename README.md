@@ -22,9 +22,9 @@ It provides three things and nothing more:
 1. **A pluggable [`Backend`]** — `SqliteBackend` today (bundled rusqlite, zero
    system dependencies, the laptop default). A **synchronous** Postgres backend
    lands behind the `pg` feature in Phase 2, for where an operator already runs
-   a server (your own box, or [`airship`](https://github.com/Gilamonster-Foundation/airship)'s
-   "Meat Locker"). Everything is synchronous, so consumers drop it into their
-   existing call sites with no async refactor.
+   a server (your own box, or an operator-owned managed cluster database).
+   Everything is synchronous, so consumers drop it into their existing call
+   sites with no async refactor.
 2. **Two causal primitives** — `Generation` (a named monotonic counter) and
    `WriterLog` (a per-`(stream, writer)` log whose every entry chains the
    previous entry's BLAKE3 hash, verifiable with `WriterLog::verify`).
@@ -98,7 +98,7 @@ the same steps and must stay in parity.
 | **0 (this repo)** | Substrate: `Backend` + SQLite, `Generation`, `WriterLog`, `Doorbell`. |
 | **1** | Consumers wire the doorbell over agent-mesh for local multi-agent coordination. |
 | **2** | `pg` feature: synchronous Postgres `Backend` (opt-in, BYO/remote server). |
-| **3** | airship "Meat Locker" — operator-owned managed Postgres for in-cluster fleets. |
+| **3** | Operator-owned managed Postgres for in-cluster fleets (the cluster "Meat Locker"). |
 | **4** | Semantic recall (pgvector), in-cluster only. |
 
 ## License

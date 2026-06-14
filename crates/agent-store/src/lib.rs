@@ -60,6 +60,7 @@ mod doorbell;
 mod error;
 mod fingerprint;
 mod generation;
+mod policy;
 mod writer_log;
 
 pub use backend::{Backend, Dialect, Row, SqliteBackend, Value};
@@ -67,4 +68,5 @@ pub use doorbell::{CommitEvent, Doorbell};
 pub use error::{Result, StoreError};
 pub use fingerprint::Fingerprint;
 pub use generation::Generation;
+pub use policy::{BackendKind, StorePolicy};
 pub use writer_log::{Entry, WriterLog};

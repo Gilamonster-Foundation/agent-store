@@ -1,0 +1,24 @@
+[package]
+name = "agent-store"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Causal-ordered, backend-pluggable store substrate for the agent fleet — a monotonic generation counter and a per-writer BLAKE3-chained log, with a commit doorbell. SQLite today; Postgres behind a feature gate (Phase 2)."
+readme = "../../README.md"
+keywords = ["agent", "store", "causal", "blake3", "sqlite"]
+categories = ["database"]
+
+[features]
+default = []
+# Phase 2: Postgres backend via the SYNC `postgres` crate (not async sqlx),
+# so consumers keep their synchronous call patterns. Stubbed until P2 lands.
+pg = []
+
+[dependencies]
+anyhow.workspace = true
+blake3.workspace = true
+rusqlite.workspace = true
+thiserror.workspace = true

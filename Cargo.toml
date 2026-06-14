@@ -2,10 +2,10 @@
 resolver = "2"
 members = ["crates/agent-store"]
 
-# 0.1.x semver line (Shawn, 2026-06-13): first publish = 0.1.0, cut manually
-# once agent-store is consumed by newt-agent and modulex-mcp in the field.
+# 0.1.x semver line (Shawn, 2026-06-13): 0.1.0 published; 0.1.1 adds the
+# incremental-adoption seam (SqliteBackend::from_connection) for consumers.
 [workspace.package]
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.85"
 license = "MIT OR Apache-2.0"
@@ -13,7 +13,7 @@ authors = ["Shawn Hartsock <hartsock@users.noreply.github.com>"]
 repository = "https://github.com/Gilamonster-Foundation/agent-store"
 
 [workspace.dependencies]
-agent-store = { path = "crates/agent-store", version = "=0.1.0" }
+agent-store = { path = "crates/agent-store", version = "=0.1.1" }
 
 anyhow = "1.0"
 blake3 = "1.8"

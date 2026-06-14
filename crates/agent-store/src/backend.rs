@@ -76,6 +76,25 @@ impl SqliteBackend {
         Ok(Self { conn })
     }
 
+    /// Wrap a connection a consumer already owns — the **incremental-adoption
+    /// seam**. A consumer (newt's `ConversationStore`, modulex's `Store`) that
+    /// already holds a `rusqlite::Connection` hands it over, keeps running its
+    /// own domain SQL through [`SqliteBackend::connection`], and gets the
+    /// agent-store primitives on the *same* database: no second connection, no
+    /// big-bang rewrite. Pragmas are the caller's responsibility here (the
+    /// connection is assumed already configured).
+    pub fn from_connection(conn: rusqlite::Connection) -> Self {
+        Self { conn }
+    }
+
+    /// Borrow the underlying SQLite connection for backend-specific
+    /// (domain-table) SQL. SQLite-only by nature — the [`Backend`] trait stays
+    /// the portable, backend-agnostic surface; this escape hatch is how a
+    /// consumer keeps its existing rusqlite code while adopting the substrate.
+    pub fn connection(&self) -> &rusqlite::Connection {
+        &self.conn
+    }
+
     fn apply_pragmas(conn: &rusqlite::Connection) -> Result<()> {
         // WAL + a generous busy timeout: multiple co-located agents serialize
         // on the write lock instead of failing fast. (NFS-home degradation to
@@ -207,5 +226,23 @@ mod tests {
     fn dialect_is_sqlite() {
         let db = SqliteBackend::in_memory().unwrap();
         assert_eq!(db.dialect(), Dialect::Sqlite);
+    }
+
+    #[test]
+    fn from_connection_wraps_and_shares_the_database() {
+        // A consumer's own connection, handed to the substrate.
+        let conn = rusqlite::Connection::open_in_memory().unwrap();
+        let db = SqliteBackend::from_connection(conn);
+
+        // Substrate writes through the Backend trait...
+        db.exec("CREATE TABLE t (x INTEGER)", &[]).unwrap();
+        // ...and the consumer keeps its own rusqlite domain SQL via the escape
+        // hatch — both hit the same database.
+        db.connection()
+            .execute("INSERT INTO t VALUES (7)", [])
+            .unwrap();
+
+        let rows = db.query("SELECT x FROM t", &[]).unwrap();
+        assert_eq!(rows, vec![vec![Value::Int(7)]]);
     }
 }

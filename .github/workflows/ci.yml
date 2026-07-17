@@ -9,7 +9,10 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # In-home ARC runner when GMF_LINUX_RUNNER is set (=gmf-k3s), else
+    # GitHub-hosted. Lets us keep Linux CI off shared OSS minutes while
+    # falling back to hosted automatically if the home lab is down.
+    runs-on: ${{ vars.GMF_LINUX_RUNNER || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable

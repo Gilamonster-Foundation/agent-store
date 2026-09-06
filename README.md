@@ -4,8 +4,6 @@
 > layer that gives every agent the same durable ordering, identity, and
 > coordination seam, on SQLite today and PostgreSQL tomorrow.
 
-**Status:** bootstrapping (2026-06-13)
-
 ## What this is
 
 `agent-store` is not a database and not an agent. It is the small Rust crate
@@ -91,15 +89,12 @@ just install-hooks  # REQUIRED after clone: installs .githooks/pre-push
 Zero-warnings policy; `.githooks/pre-push` and `.github/workflows/ci.yml` run
 the same steps and must stay in parity.
 
-## Roadmap
+## Documents
 
-| Phase | Scope |
-|-------|-------|
-| **0 (this repo)** | Substrate: `Backend` + SQLite, `Generation`, `WriterLog`, `Doorbell`. |
-| **1** | Consumers wire the doorbell over agent-mesh for local multi-agent coordination. |
-| **2** | `pg` feature: synchronous Postgres `Backend` (opt-in, BYO/remote server). |
-| **3** | Operator-owned managed Postgres for in-cluster fleets (the cluster "Meat Locker"). |
-| **4** | Semantic recall (pgvector), in-cluster only. |
+| Doc | What it covers |
+|-----|-----------------|
+| [`docs/status.md`](docs/status.md) | What's landed, what's ahead (Postgres, in-cluster Postgres, semantic recall), which consumers have adopted which pieces. |
+| [`CLAUDE.md`](CLAUDE.md) | Hard rules for agents working in this repo (sync-only, mesh-agnostic, no wall-clock ordering). |
 
 ## License
 
